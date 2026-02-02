@@ -5,8 +5,10 @@ import ProgramsSection from "@/components/landing/ProgramsSection";
 import TrainersSection from "@/components/landing/TrainersSection";
 import PricingSection from "@/components/landing/PricingSection";
 import TestimonialsSection from "@/components/landing/TestimonialsSection";
+import BMICalculator from "@/components/landing/BMICalculator";
 import CTASection from "@/components/landing/CTASection";
 import Footer from "@/components/landing/Footer";
+import FloatingContactButton from "@/components/landing/FloatingContactButton";
 
 const Index = () => {
   return (
@@ -24,10 +26,12 @@ const Index = () => {
         <PricingSection />
       </section>
       <TestimonialsSection />
+      <BMICalculator />
       <section id="contact">
         <CTASection />
       </section>
       <Footer />
+      <FloatingContactButton />
     </div>
   );
 };
