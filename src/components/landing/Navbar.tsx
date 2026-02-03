@@ -22,6 +22,16 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+const handleJoinNow = () => {
+  const message = encodeURIComponent(
+    "Hi! I came across your website and I am interested in joining your gym. Please share the details."
+  );
+
+  window.open(`https://wa.me/919566623441?text=${message}`, "_blank");
+};
+
+
+
   return (
     <motion.nav
       initial={{ y: -100 }}
@@ -55,10 +65,10 @@ const Navbar = () => {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center gap-4">
-            <Button variant="ghost" size="sm">
+            {/* <Button variant="ghost" size="sm">
               Log In
-            </Button>
-            <Button variant="default" size="sm">
+            </Button> */}
+            <Button variant="default" size="sm" onClick={handleJoinNow}>
               Join Now
             </Button>
           </div>
@@ -97,10 +107,10 @@ const Navbar = () => {
               </a>
             ))}
             <div className="pt-4 flex flex-col gap-3">
-              <Button variant="ghost" className="w-full">
+              {/* <Button variant="ghost" className="w-full">
                 Log In
-              </Button>
-              <Button variant="default" className="w-full">
+              </Button> */}
+              <Button variant="default" className="w-full" onClick={handleJoinNow}>
                 Join Now
               </Button>
             </div>

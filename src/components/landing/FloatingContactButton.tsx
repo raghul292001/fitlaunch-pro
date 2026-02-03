@@ -5,9 +5,9 @@ import { MessageCircle, Phone, X } from "lucide-react";
 const FloatingContactButton = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const phoneNumber = "+919556623441";
-  const whatsappNumber = "919556623441";
-  const whatsappMessage = encodeURIComponent("Hi! I'm interested in joining your gym.");
+  const phoneNumber = "+919566623441";
+  const whatsappNumber = "919566623441";
+  const whatsappMessage = encodeURIComponent("Hi! I came across your website and I am interested in joining your gym. Please share the details.");
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
