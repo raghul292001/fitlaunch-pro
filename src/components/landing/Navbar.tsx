@@ -36,8 +36,8 @@ const Navbar = () => {
       <div className="container px-4 md:px-6">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <a href="/" className="text-2xl font-display text-gradient">
-            IRONFORGE
+          <a href="/" className="text-lg md:text-2xl font-display text-gradient truncate max-w-[200px] md:max-w-none">
+            Dream Fitness Center
           </a>
 
           {/* Desktop Navigation */}

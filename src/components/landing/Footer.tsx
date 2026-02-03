@@ -7,7 +7,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
           <div>
-            <h3 className="text-3xl font-display text-gradient mb-4">IRONFORGE</h3>
+            <h3 className="text-3xl font-display text-gradient mb-4">Dream Fitness Center</h3>
             <p className="text-muted-foreground text-sm mb-6">
               Premium fitness center dedicated to helping you achieve your health and fitness goals through expert training and state-of-the-art facilities.
             </p>
@@ -50,15 +50,15 @@ const Footer = () => {
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                 <span className="text-muted-foreground text-sm">
-                  123 Fitness Avenue
+                  28, 3rd Street, Ramkrishnanagar,
                   <br />
-                  Downtown, NY 10001
+                  Ernavoor, Chennai-57
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-primary flex-shrink-0" />
                 <span className="text-muted-foreground text-sm">
-                  +1 (555) 123-4567
+                  +91 9556623441
                 </span>
               </li>
               <li className="flex items-start gap-3">
@@ -97,7 +97,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-border/50 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-muted-foreground text-sm">
-            © 2024 IronForge Fitness. All rights reserved.
+            © 2026 Dream Fitness Center. All rights reserved.
           </p>
           <div className="flex gap-6">
             {["Privacy Policy", "Terms of Service", "Cookie Policy"].map(

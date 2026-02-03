@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import heroImage from "@/assets/hero-gym.jpg";
+import heroImage from "@/assets/hero-gym.png";
 import { ArrowRight, Play } from "lucide-react";
 
 const HeroSection = () => {
@@ -25,9 +25,6 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <span className="inline-block px-4 py-2 mb-6 text-sm font-semibold uppercase tracking-widest text-primary bg-primary/10 rounded-full border border-primary/20">
-              Premium Fitness Center
-            </span>
           </motion.div>
 
           <motion.h1
