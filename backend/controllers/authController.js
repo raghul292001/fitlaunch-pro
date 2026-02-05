@@ -34,7 +34,7 @@ exports.login = async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000 // 1 day
     });
 
-    res.json({ message: 'Login successful' });
+    res.json({ message: 'Login successful', token });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');

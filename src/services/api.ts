@@ -7,6 +7,20 @@ const api = axios.create({
   withCredentials: true, // Send cookies with requests
 });
 
+// Request interceptor to add Bearer token
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('adminToken');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 // Response interceptor to handle 401s (optional but good practice)
 api.interceptors.response.use(
   (response) => response,
@@ -20,9 +34,18 @@ api.interceptors.response.use(
 );
 
 export const auth = {
-  login: (credentials: any) => api.post('/auth/login', credentials),
+  login: async (credentials: any) => {
+    const response = await api.post('/auth/login', credentials);
+    if (response.data.token) {
+      localStorage.setItem('adminToken', response.data.token);
+    }
+    return response;
+  },
   register: (credentials: any) => api.post('/auth/register', credentials),
-  logout: () => api.post('/auth/logout'),
+  logout: async () => {
+    localStorage.removeItem('adminToken');
+    return api.post('/auth/logout');
+  },
   checkAuth: () => api.get('/auth/check'),
 };
 
