@@ -85,5 +85,5 @@ export const content = {
   getBlogPost: (id: string) => api.get(`/blog/${id}`), // Single post for frontend
 };
 
-export const API_BASE_URL = 'http://localhost:5000'; // For images
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'; // For images
 export default api;

@@ -85,7 +85,7 @@ const seedData = async () => {
       mainHeading2: 'TRANSFORM YOUR',
       highlightedHeading2: 'LIFE.',
       subheading: 'Personal training, modern equipment, and real results. Join the gym that transforms goals into achievements.',
-      primaryCtaText: 'JOIN NOW →',
+      primaryCtaText: 'JOIN NOW',
       secondaryCtaText: 'BOOK FREE TRIAL',
       stats: [
         { value: "10K+", label: "Active Members" },
