@@ -34,6 +34,7 @@ const corsOptions = {
   origin: [
     'http://localhost:8080',
     'https://fitlaunch-pro-1.onrender.com',
+    'https://dreamfitnesscenter.in',
     'https://www.dreamfitnesscenter.in'
   ],
   credentials: true,
