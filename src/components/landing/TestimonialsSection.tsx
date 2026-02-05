@@ -1,31 +1,47 @@
 import { motion } from "framer-motion";
-import { Quote, Star } from "lucide-react";
-
-const testimonials = [
-  {
-    name: "Sarah Mitchell",
-    role: "Lost 30 lbs in 4 months",
-    content:
-      "The trainers here changed my life. I came in feeling hopeless and left feeling like a completely new person. The personalized attention made all the difference.",
-    rating: 5,
-  },
-  {
-    name: "David Park",
-    role: "Gained 20 lbs of muscle",
-    content:
-      "Best gym I've ever been to. The equipment is top-notch, the atmosphere is motivating, and the community keeps you accountable. Worth every penny.",
-    rating: 5,
-  },
-  {
-    name: "Emma Rodriguez",
-    role: "Marathon runner",
-    content:
-      "The combination of strength training and cardio programs helped me shave 15 minutes off my marathon time. The nutrition guidance was a game-changer.",
-    rating: 5,
-  },
-];
+import { Star } from "lucide-react";
+import { useEffect, useState } from "react";
+import { content } from "@/services/api";
+import useEmblaCarousel from 'embla-carousel-react';
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 const TestimonialsSection = () => {
+  const [testimonials, setTestimonials] = useState<any[]>([]);
+  const [sectionData, setSectionData] = useState({ 
+    title: "REAL PEOPLE,", 
+    subtitle: "REAL RESULTS",
+    description: "Don't just take our word for it. Hear from the real people who have transformed their lives with us."
+  });
+  
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'start' });
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const res = await content.getTestimonials();
+        if (res.data) setTestimonials(res.data);
+      } catch (e) {
+        console.error("Failed to fetch testimonials", e);
+      }
+    };
+
+    const fetchSection = async () => {
+        try {
+            const res = await content.getSection('testimonials');
+            setSectionData(res.data);
+        } catch (e) {
+            console.error("Failed to fetch section header", e);
+        }
+    };
+
+    fetchTestimonials();
+    fetchSection();
+  }, []);
+
+  const scrollPrev = () => emblaApi && emblaApi.scrollPrev();
+  const scrollNext = () => emblaApi && emblaApi.scrollNext();
+
   return (
     <section className="py-24 bg-secondary/30">
       <div className="container px-4 md:px-6">
@@ -37,56 +53,79 @@ const TestimonialsSection = () => {
           className="text-center mb-16"
         >
           <span className="text-primary font-semibold uppercase tracking-widest text-sm">
-            Success Stories
+            Testimonials
           </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-display mt-4 mb-6">
-            Real People.
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-display mt-4 mb-6 uppercase">
+            {sectionData.title}
             <br />
-            <span className="text-gradient">Real Results.</span>
+            <span className="text-gradient">{sectionData.subtitle}</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-            Don't just take our word for it. Hear from members who transformed their lives.
+            {sectionData.description}
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="relative p-8 rounded-2xl card-gradient border border-border/50"
-            >
-              <Quote className="w-10 h-10 text-primary/30 mb-6" />
-              
-              <div className="flex gap-1 mb-4">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className="w-5 h-5 fill-primary text-primary"
-                  />
-                ))}
-              </div>
-
-              <p className="text-foreground/90 mb-6 leading-relaxed">
-                "{testimonial.content}"
-              </p>
-
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-                  <span className="text-xl font-display text-primary">
-                    {testimonial.name.charAt(0)}
-                  </span>
+        {/* Carousel Container */}
+        <div className="relative max-w-6xl mx-auto px-4">
+            <div className="overflow-hidden" ref={emblaRef}>
+                <div className="flex -ml-6">
+                    {testimonials.map((testimonial, index) => (
+                        <div key={index} className="flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_33.333%] pl-6 min-w-0">
+                            <motion.div
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.6, delay: index * 0.1 }}
+                                className="p-8 rounded-2xl bg-[#1A1D24] border border-border/10 flex flex-col h-full relative group hover:border-primary/30 transition-colors"
+                            >
+                                <div className="absolute top-6 left-6 text-6xl font-display text-primary/20 leading-none select-none">
+                                    "
+                                </div>
+                                
+                                <div className="flex gap-1 mb-6 mt-4 relative z-10">
+                                    {[...Array(testimonial.rating)].map((_, i) => (
+                                    <Star key={i} className="w-4 h-4 fill-primary text-primary" />
+                                    ))}
+                                </div>
+                                
+                                <p className="text-gray-300 mb-8 leading-relaxed relative z-10 flex-grow text-sm">
+                                    "{testimonial.message}"
+                                </p>
+                                
+                                <div className="flex items-center gap-4 relative z-10 mt-auto border-t border-white/5 pt-6">
+                                    <div className="w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-lg">
+                                    {testimonial.name[0]}
+                                    </div>
+                                    <div>
+                                    <div className="font-bold text-white uppercase text-sm tracking-wide">{testimonial.name}</div>
+                                    <div className="text-xs text-primary font-medium uppercase tracking-wider">{testimonial.result}</div>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </div>
+                    ))}
                 </div>
-                <div>
-                  <h4 className="font-semibold">{testimonial.name}</h4>
-                  <p className="text-sm text-primary">{testimonial.role}</p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+            </div>
+            
+            {/* Navigation Buttons */}
+            <div className="flex justify-center gap-4 mt-12">
+                <Button 
+                    variant="outline" 
+                    size="icon" 
+                    className="rounded-full border-primary/20 hover:bg-primary/10 hover:text-primary"
+                    onClick={scrollPrev}
+                >
+                    <ArrowLeft className="w-5 h-5" />
+                </Button>
+                <Button 
+                    variant="outline" 
+                    size="icon" 
+                    className="rounded-full border-primary/20 hover:bg-primary/10 hover:text-primary"
+                    onClick={scrollNext}
+                >
+                    <ArrowRight className="w-5 h-5" />
+                </Button>
+            </div>
         </div>
       </div>
     </section>

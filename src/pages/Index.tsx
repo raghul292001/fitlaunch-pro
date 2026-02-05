@@ -7,6 +7,7 @@ import PricingSection from "@/components/landing/PricingSection";
 import TestimonialsSection from "@/components/landing/TestimonialsSection";
 import BMICalculator from "@/components/landing/BMICalculator";
 import CTASection from "@/components/landing/CTASection";
+import ContactSection from "@/components/landing/ContactSection";
 import Footer from "@/components/landing/Footer";
 import FloatingContactButton from "@/components/landing/FloatingContactButton";
 
@@ -29,6 +30,7 @@ const Index = () => {
       <BMICalculator />
       <section id="contact">
         <CTASection />
+        <ContactSection />
       </section>
       <Footer />
       <FloatingContactButton />

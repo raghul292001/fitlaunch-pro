@@ -1,40 +1,59 @@
 import { motion } from "framer-motion";
-import { Flame, Zap, Heart, User, Dumbbell } from "lucide-react";
-
-const programs = [
-  {
-    icon: Dumbbell,
-    title: "Weight Training",
-    description: "Build strength and muscle with personalized weight training programs.",
-    color: "from-primary/20 to-primary/5",
-  },
-  {
-    icon: Flame,
-    title: "Fat Loss Program",
-    description: "Burn fat effectively with our scientifically designed workout plans.",
-    color: "from-orange-500/20 to-orange-500/5",
-  },
-  {
-    icon: Zap,
-    title: "CrossFit / HIIT",
-    description: "High-intensity workouts that push your limits and deliver results.",
-    color: "from-yellow-500/20 to-yellow-500/5",
-  },
-  {
-    icon: Heart,
-    title: "Yoga & Cardio",
-    description: "Improve flexibility, balance, and cardiovascular health.",
-    color: "from-pink-500/20 to-pink-500/5",
-  },
-  {
-    icon: User,
-    title: "Personal Training",
-    description: "One-on-one sessions tailored to your specific goals and needs.",
-    color: "from-blue-500/20 to-blue-500/5",
-  },
-];
+import * as LucideIcons from "lucide-react";
+import { useEffect, useState } from "react";
+import { content } from "@/services/api";
 
 const ProgramsSection = () => {
+  const [programs, setPrograms] = useState<any[]>([]);
+  const [sectionData, setSectionData] = useState({ 
+      title: "FIND YOUR", 
+      subtitle: "PERFECT FIT",
+      description: "From strength training to mindfulness, we offer programs for every fitness level and goal."
+  });
+
+  useEffect(() => {
+    const fetchPrograms = async () => {
+      try {
+        const res = await content.getPrograms();
+        // Filter out inactive programs immediately upon fetching
+        if (res.data && res.data.length > 0) {
+          const activePrograms = res.data.filter((p: any) => p.active !== false);
+          setPrograms(activePrograms);
+        } else {
+            // Fallback default
+            setPrograms([
+              {
+                icon: "Dumbbell",
+                name: "Weight Training",
+                shortDescription: "Build strength and muscle with personalized weight training programs.",
+                cardColor: "from-[#3E4A1F] to-[#5A6026]",
+              }
+            ]);
+        }
+      } catch (e) {
+        console.error("Failed to fetch programs", e);
+      }
+    };
+
+    const fetchSection = async () => {
+        try {
+            const res = await content.getSection('programs');
+            setSectionData(res.data);
+        } catch (e) {
+            console.error("Failed to fetch section header", e);
+        }
+    };
+
+    fetchPrograms();
+    fetchSection();
+  }, []);
+
+  const getIcon = (iconName: string) => {
+    // @ts-ignore
+    const Icon = LucideIcons[iconName];
+    return Icon ? <Icon className="w-8 h-8 text-primary" /> : <LucideIcons.Dumbbell className="w-8 h-8 text-primary" />;
+  };
+
   return (
     <section className="py-24">
       <div className="container px-4 md:px-6">
@@ -48,13 +67,13 @@ const ProgramsSection = () => {
           <span className="text-primary font-semibold uppercase tracking-widest text-sm">
             Our Programs
           </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-display mt-4 mb-6">
-            Find Your
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-display mt-4 mb-6 uppercase">
+            {sectionData.title}
             <br />
-            <span className="text-gradient">Perfect Fit</span>
+            <span className="text-gradient">{sectionData.subtitle}</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-            From strength training to mindfulness, we offer programs for every fitness level and goal.
+            {sectionData.description}
           </p>
         </motion.div>
 
@@ -67,16 +86,17 @@ const ProgramsSection = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               whileHover={{ y: -8 }}
-              className={`relative p-8 rounded-2xl bg-gradient-to-b ${program.color} border border-border/50 cursor-pointer group overflow-hidden`}
+              style={{ background: program.cardColor }}
+              className={`relative p-8 rounded-2xl border border-border/50 cursor-pointer group overflow-hidden`}
             >
               <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               
               <div className="relative z-10">
                 <div className="w-16 h-16 rounded-2xl bg-background/50 backdrop-blur-sm flex items-center justify-center mb-6">
-                  <program.icon className="w-8 h-8 text-primary" />
+                  {getIcon(program.icon)}
                 </div>
-                <h3 className="text-2xl font-display mb-3">{program.title}</h3>
-                <p className="text-muted-foreground">{program.description}</p>
+                <h3 className="text-2xl font-display mb-3 uppercase">{program.name}</h3>
+                <p className="text-muted-foreground">{program.shortDescription}</p>
                 
                 <div className="mt-6 flex items-center text-primary font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
                   Learn More

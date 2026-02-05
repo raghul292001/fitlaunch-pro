@@ -3,6 +3,12 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap } from "lucide-react";
 
 const CTASection = () => {
+  
+  const handleBookTrial = () => {
+    const message = encodeURIComponent("Hi! I’d like to book a free trial session.");
+    window.open(`https://wa.me/919566623441?text=${message}`, "_blank");
+  };
+
   return (
     <section className="py-24 relative overflow-hidden">
       {/* Background Elements */}
@@ -37,13 +43,13 @@ const CTASection = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="hero" size="xl" className="glow-effect">
+            <Button variant="hero" size="xl" className="glow-effect" onClick={handleBookTrial}>
               Start Free Trial
               <ArrowRight className="w-5 h-5" />
             </Button>
-            <Button variant="heroOutline" size="xl">
+            {/* <Button variant="heroOutline" size="xl">
               Contact Us
-            </Button>
+            </Button> */}
           </div>
 
           <p className="text-sm text-muted-foreground mt-8">

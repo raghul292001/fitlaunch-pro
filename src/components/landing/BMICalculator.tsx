@@ -70,7 +70,7 @@ const BMICalculator = () => {
                   Height (cm)
                 </label>
                 <input
-                  type="number"
+                  type="text"
                   value={height}
                   onChange={(e) => setHeight(e.target.value.slice(0, 5))}
                   placeholder="170"
@@ -83,7 +83,7 @@ const BMICalculator = () => {
                   Weight (kg)
                 </label>
                 <input
-                  type="number"
+                  type="text"
                   value={weight}
                   onChange={(e) => setWeight(e.target.value.slice(0, 5))}
                   placeholder="70"

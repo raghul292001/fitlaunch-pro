@@ -1,81 +1,54 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Check, Star } from "lucide-react";
-
-const plans = [
-  {
-    name: "Basic",
-    price: 1500,
-    period: "/month",
-    description: "Start your journey",
-    features: [
-      "1 Month Validity",
-      "Full gym access",
-      "General guidance",
-      "Locker room access",
-    ],
-    popular: false,
-  },
-  {
-    name: "Standard",
-    price: 4499,
-    period: "/3 months",
-    description: "Commit to consistency",
-    features: [
-      "3 Months Validity",
-      "Everything in Basic",
-      "Diet consultation",
-      "Progress tracking",
-    ],
-    popular: true,
-  },
-  {
-    name: "Premium",
-    price: 6699,
-    period: "/6 months",
-    description: "Serious transformation",
-    features: [
-      "6 Months Validity",
-      "Advanced progress tracking",
-      "Nutrition planning",
-      "Priority support",
-    ],
-    popular: false,
-  },
-  {
-    name: "Ultimate",
-    price: 9999,
-    period: "/1 year",
-    description: "Lifestyle change",
-    features: [
-      "1 Year Validity",
-      "All Premium features",
-      "Free personal training session",
-      "Unlimited guest passes",
-    ],
-    popular: false,
-  },
-];
-
-const personalTraining = [
-  {
-    name: "Individual Package",
-    price: 4000,
-    description: "For 1 Person",
-    features: ["Personalized workout plan", "1-on-1 coaching", "Diet & nutrition plan"],
-  },
-  {
-    name: "Couple Package",
-    price: 7499,
-    description: "For 2 Persons",
-    features: ["Train with a partner", "Shared goals", "Double motivation"],
-  },
-];
+import { useEffect, useState } from "react";
+import { content } from "@/services/api";
 
 const PricingSection = () => {
+  const [plans, setPlans] = useState<any[]>([]);
+  const [ptPlans, setPtPlans] = useState<any[]>([]);
+  const [sectionData, setSectionData] = useState({ 
+    title: "INVEST IN", 
+    subtitle: "YOURSELF",
+    description: "Unlock the potential inside you with our flexible pricing plans designed to fit your lifestyle."
+  });
+  const [ptSectionData, setPtSectionData] = useState({ 
+    title: "PERSONAL TRAINER", 
+    subtitle: "EXPERT GUIDANCE",
+    description: "Get one-on-one attention to maximize your results and minimize injury risk with our expert coaches."
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await content.getPricing();
+        if (res.data) setPlans(res.data);
+        const ptRes = await content.getPersonalTraining();
+        if (ptRes.data) setPtPlans(ptRes.data);
+      } catch (e) {
+        console.error("Failed to fetch pricing", e);
+      }
+    };
+
+    const fetchSections = async () => {
+        try {
+            const res = await content.getSection('pricing');
+            setSectionData(res.data);
+            const ptRes = await content.getSection('personal-training');
+            setPtSectionData(ptRes.data);
+        } catch (e) {
+            console.error("Failed to fetch section headers", e);
+        }
+    };
+
+    fetchData();
+    fetchSections();
+  }, []);
+
   return (
     <section className="py-24">
       <div className="container px-4 md:px-6">
+        {/* Gym Membership Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -84,119 +57,122 @@ const PricingSection = () => {
           className="text-center mb-16"
         >
           <span className="text-primary font-semibold uppercase tracking-widest text-sm">
-            Membership Plans
+            Pricing Plans
           </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-display mt-4 mb-6">
-            Invest In
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-display mt-4 mb-6 uppercase">
+            {sectionData.title}
             <br />
-            <span className="text-gradient">Yourself</span>
+            <span className="text-gradient">{sectionData.subtitle}</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-            Choose the plan that fits your lifestyle.
+            {sectionData.description}
           </p>
         </motion.div>
 
-        <div className="mb-12">
-            <h3 className="text-2xl md:text-3xl font-display text-center mb-8 text-primary">GYM MEMBERSHIP</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-            {plans.map((plan, index) => (
-                <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className={`relative p-6 rounded-2xl border flex flex-col ${
-                    plan.popular
-                    ? "border-primary bg-gradient-to-b from-primary/10 to-transparent shadow-[0_0_40px_hsl(142_76%_45%_/_0.15)]"
-                    : "border-border/50 card-gradient"
-                }`}
-                >
-                {plan.popular && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                    <span className="inline-flex items-center gap-1 px-4 py-1.5 text-sm font-semibold bg-primary text-primary-foreground rounded-full whitespace-nowrap">
-                        <Star className="w-4 h-4" />
-                        Most Popular
-                    </span>
-                    </div>
-                )}
-
-                <div className="text-center mb-6">
-                    <h3 className="text-xl font-display mb-2">{plan.name}</h3>
-                    <p className="text-muted-foreground text-sm mb-4">{plan.description}</p>
-                    
-                    <div className="flex items-baseline justify-center gap-1">
-                    <span className="text-3xl font-display">₹{plan.price}</span>
-                    <span className="text-muted-foreground text-sm">{plan.period}</span>
-                    </div>
+        {/* ... (Grid for Plans) ... */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
+          {plans.map((plan, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              className={`relative p-8 rounded-2xl border ${
+                plan.popular ? "border-primary bg-primary/5" : "border-border/50 card-gradient"
+              } flex flex-col`}
+            >
+              {plan.popular && (
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm font-semibold">
+                  Most Popular
                 </div>
-
-                <ul className="space-y-3 mb-6 flex-grow">
-                    {plan.features.map((feature, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                        <div className="w-4 h-4 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <Check className="w-2.5 h-2.5 text-primary" />
-                        </div>
-                        <span className="text-sm">{feature}</span>
-                    </li>
-                    ))}
-                </ul>
-
-                <Button
-                    variant={plan.popular ? "hero" : "heroOutline"}
-                    size="lg"
-                    className="w-full mt-auto"
-                >
-                    Get Started
-                </Button>
-                </motion.div>
-            ))}
-            </div>
-        </div>
-        
-        <div className="max-w-4xl mx-auto mt-8 p-4 bg-muted/30 rounded-lg border border-primary/20 text-center">
-            <p className="text-sm md:text-base text-muted-foreground">
-                <span className="text-primary font-bold block mb-2">NOTE: FOR THE BASIC PACKAGE</span>
-                The initial fee for new joiners is <span className="text-foreground font-semibold">₹2250</span> (₹1500 + ₹750). The ₹750 is a one-time charge. From the second month onwards, your monthly fee will be ₹1500 only.
-            </p>
-        </div>
-
-        <div className="mt-24">
-            <h3 className="text-2xl md:text-3xl font-display text-center mb-8 text-primary">PERSONAL TRAINER</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-                {personalTraining.map((plan, index) => (
-                    <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    className="relative p-8 rounded-2xl border border-border/50 card-gradient"
-                    >
-                        <div className="text-center mb-6">
-                            <h3 className="text-2xl font-display mb-2">{plan.name}</h3>
-                            <p className="text-primary font-semibold uppercase tracking-widest text-sm mb-4">{plan.description}</p>
-                            
-                            <div className="flex items-baseline justify-center gap-1">
-                            <span className="text-4xl font-display">₹{plan.price}</span>
-                            </div>
-                        </div>
-                        
-                        <ul className="space-y-3 mb-8">
-                            {plan.features.map((feature, i) => (
-                            <li key={i} className="flex items-start gap-3 justify-center">
-                                <Check className="w-5 h-5 text-primary flex-shrink-0" />
-                                <span className="text-sm">{feature}</span>
-                            </li>
-                            ))}
-                        </ul>
-
-                        <Button variant="heroOutline" size="lg" className="w-full">
-                            Select Plan
-                        </Button>
-                    </motion.div>
+              )}
+              <div className="mb-8">
+                <h3 className="text-xl font-display mb-2 uppercase">{plan.name}</h3>
+                <p className="text-sm text-muted-foreground mb-4 uppercase tracking-widest">{plan.subtitle}</p>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-3xl font-bold">₹{plan.price}</span>
+                  <span className="text-muted-foreground">{plan.duration}</span>
+                </div>
+              </div>
+              <ul className="space-y-4 mb-8 flex-1">
+                {plan.features.map((feature: string, i: number) => (
+                  <li key={i} className="flex items-center gap-3 text-sm text-muted-foreground">
+                    <Check className="w-5 h-5 text-primary flex-shrink-0" />
+                    {feature}
+                  </li>
                 ))}
-            </div>
+              </ul>
+              <Button className={`w-full ${plan.popular ? "default" : "variant-outline"}`}>
+                Get Started
+              </Button>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* NOTE Section */}
+        <div className="max-w-4xl mx-auto mb-24">
+            <motion.div 
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                className="p-6 rounded-xl border border-primary/20 bg-gradient-to-r from-background to-secondary/20 shadow-[0_0_20px_rgba(250,204,21,0.05)] text-center relative overflow-hidden"
+            >
+                <div className="absolute inset-0 bg-primary/5 blur-3xl -z-10"></div>
+                <h4 className="text-primary font-bold mb-2 uppercase tracking-wide">NOTE: FOR THE BASIC PACKAGE</h4>
+                <p className="text-muted-foreground">
+                    The intake fee for new joiners is <span className="text-foreground font-semibold">₹2250 (₹1500 + ₹750)</span> as a one-time charge. 
+                    From the second month onwards, your monthly fee will be <span className="text-foreground font-semibold">₹1500 only</span>.
+                </p>
+            </motion.div>
+        </div>
+
+        {/* Personal Training Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <span className="text-primary font-semibold uppercase tracking-widest text-sm">
+            One-on-One
+          </span>
+          <h2 className="text-4xl md:text-5xl font-display mt-4 mb-6 uppercase">
+            {ptSectionData.title}
+            <br />
+            <span className="text-gradient">{ptSectionData.subtitle}</span>
+          </h2>
+           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+            {ptSectionData.description}
+          </p>
+        </motion.div>
+        
+        {/* Personal Training Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+             {ptPlans.map((plan, index) => (
+                 <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: index === 0 ? -30 : 30 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    className="p-8 rounded-2xl card-gradient border border-border/50 text-center hover:border-primary/50 transition-colors"
+                 >
+                    <span className="text-sm font-semibold text-primary uppercase tracking-widest mb-4 block">
+                        {plan.subLabel}
+                    </span>
+                    <h3 className="text-2xl font-display mb-4 uppercase">{plan.name}</h3>
+                    <div className="text-4xl font-bold mb-8">₹{plan.price}</div>
+                    <ul className="space-y-4 mb-8 text-left max-w-xs mx-auto">
+                         {plan.features.map((f: string, i: number) => (
+                            <li key={i} className="flex items-center gap-3 text-muted-foreground">
+                                <Check className="w-5 h-5 text-primary" /> {f}
+                            </li>
+                         ))}
+                    </ul>
+                    <Button variant="outline" className="w-full">Get Started</Button>
+                 </motion.div>
+             ))}
         </div>
 
       </div>
