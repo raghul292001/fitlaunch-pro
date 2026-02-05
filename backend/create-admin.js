@@ -13,7 +13,11 @@ const createAdmin = async () => {
 
     let admin = await Admin.findOne({ username });
     if (admin) {
-      console.log('Admin user already exists');
+      console.log('Admin user exists. Updating password...');
+      const salt = await bcrypt.genSalt(10);
+      admin.password = await bcrypt.hash(password, salt);
+      await admin.save();
+      console.log(`Admin password updated.\nUsername: ${username}\nPassword: ${password}`);
       process.exit(0);
     }
 
