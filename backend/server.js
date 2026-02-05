@@ -28,7 +28,10 @@ app.use('/api', limiter);
 
 // CORS Configuration
 const corsOptions = {
-  origin: process.env.CLIENT_URL || 'http://localhost:8080',
+  origin: [
+    'http://localhost:8080',
+    'https://fitlaunch-pro-1.onrender.com'
+  ],
   credentials: true,
   optionsSuccessStatus: 200
 };
