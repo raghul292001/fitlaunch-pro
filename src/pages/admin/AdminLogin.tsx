@@ -16,8 +16,7 @@ const AdminLogin = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await auth.login({ username, password });
-      localStorage.setItem('adminToken', res.data.token);
+      await auth.login({ username, password });
       toast.success('Login successful');
       navigate('/admin/dashboard');
     } catch (error) {

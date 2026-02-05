@@ -6,6 +6,7 @@ import { Calendar, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { content, API_BASE_URL } from "@/services/api";
 import { Link } from "react-router-dom";
+import SEO from "@/components/SEO";
 
 const Blog = () => {
   const [blogPosts, setBlogPosts] = useState<any[]>([]);
@@ -24,6 +25,11 @@ const Blog = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title="Fitness Blog & Tips | Gym in Ernavoor" 
+        description="Read the latest fitness insights, workout tips, and nutrition advice from the experts at Dream Fitness Center, Chennai's best gym in Ernavoor and Wimco Nagar."
+        keywords="fitness blog, workout tips, nutrition advice, gym chennai blog, muscle building tips, weight loss guide"
+      />
       <Navbar />
       
       {/* Hero Section */}

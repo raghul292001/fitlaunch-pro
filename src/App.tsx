@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
+import { HelmetProvider } from 'react-helmet-async';
 
 // Lazy load pages
 const Index = lazy(() => import("./pages/Index"));
@@ -36,40 +37,42 @@ const Loading = () => (
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Suspense fallback={<Loading />}>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/terms-of-service" element={<TermsOfService />} />
-            <Route path="/cookie-policy" element={<CookiePolicy />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/:id" element={<BlogPost />} />
-            
-            {/* Admin Routes */}
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<Dashboard />} />
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="hero" element={<HeroEditor />} />
-              <Route path="pricing" element={<PricingEditor />} />
-              <Route path="features" element={<FeaturesEditor />} />
-              <Route path="programs" element={<ProgramsEditor />} />
-              <Route path="coaches" element={<CoachesEditor />} />
-              <Route path="testimonials" element={<TestimonialsEditor />} />
-              <Route path="blog" element={<BlogEditor />} />
-              <Route path="footer" element={<FooterEditor />} />
-              <Route path="contact-submissions" element={<ContactSubmissions />} />
-            </Route>
+    <HelmetProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Suspense fallback={<Loading />}>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-of-service" element={<TermsOfService />} />
+              <Route path="/cookie-policy" element={<CookiePolicy />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:id" element={<BlogPost />} />
+              
+              {/* Admin Routes */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<Dashboard />} />
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="hero" element={<HeroEditor />} />
+                <Route path="pricing" element={<PricingEditor />} />
+                <Route path="features" element={<FeaturesEditor />} />
+                <Route path="programs" element={<ProgramsEditor />} />
+                <Route path="coaches" element={<CoachesEditor />} />
+                <Route path="testimonials" element={<TestimonialsEditor />} />
+                <Route path="blog" element={<BlogEditor />} />
+                <Route path="footer" element={<FooterEditor />} />
+                <Route path="contact-submissions" element={<ContactSubmissions />} />
+              </Route>
 
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
-      </BrowserRouter>
-    </TooltipProvider>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </BrowserRouter>
+      </TooltipProvider>
+    </HelmetProvider>
   </QueryClientProvider>
 );
 

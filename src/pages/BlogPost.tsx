@@ -6,6 +6,7 @@ import { content, API_BASE_URL } from "@/services/api";
 import { Calendar, User, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import SEO from "@/components/SEO";
 
 const getEmbedUrl = (url: string) => {
     if (!url) return null;
@@ -73,6 +74,13 @@ const BlogPost = () => {
 
   return (
     <div className="min-h-screen bg-background text-gray-200">
+      <SEO 
+        title={post.title} 
+        description={post.excerpt}
+        image={post.image}
+        keywords={`${post.category}, fitness tips, gym chennai, ${post.title.toLowerCase()}`}
+        type="article"
+      />
       <Navbar />
       
       {/* Hero / Header */}

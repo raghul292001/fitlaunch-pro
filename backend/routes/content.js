@@ -4,7 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const contentController = require('../controllers/contentController');
 const { Hero, Feature, Program, Coach, PricingPlan, PersonalTraining, Testimonial, BMIContent, FooterContact } = require('../models');
-const auth = require('../middleware/auth');
+const auth = require('../middleware/authMiddleware');
 
 // Multer Config
 const storage = multer.diskStorage({

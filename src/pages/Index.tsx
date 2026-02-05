@@ -10,10 +10,16 @@ import CTASection from "@/components/landing/CTASection";
 import ContactSection from "@/components/landing/ContactSection";
 import Footer from "@/components/landing/Footer";
 import FloatingContactButton from "@/components/landing/FloatingContactButton";
+import SEO from "@/components/SEO";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title="Best Gym in Chennai (Ernavoor & Wimco Nagar)" 
+        description="Join Dream Fitness Center, the top-rated gym in Ernavoor, Chennai. We offer personal training, weight loss programs, HIIT, and modern equipment. Book your free trial today!"
+        keywords="gym near me, best gym in chennai, fitness center ernavoor, gym wimco nagar, personal trainer chennai, weight loss gym, HIIT training, strength training"
+      />
       <Navbar />
       <HeroSection />
       <FeaturesSection />

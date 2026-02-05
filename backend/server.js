@@ -2,13 +2,44 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
+const hpp = require('hpp');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 const app = express();
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+// Security Middleware
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
+app.use(cookieParser());
+
+// Rate Limiting
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000, // 10 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again later.'
+});
+app.use('/api', limiter);
+
+// CORS Configuration
+const corsOptions = {
+  origin: process.env.CLIENT_URL || 'http://localhost:8080',
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
+
+// Body Parser & Sanitization
+app.use(express.json({ limit: '10kb' })); // Limit body size
+app.use(mongoSanitize()); // Prevent NoSQL Injection
+app.use(xss()); // Prevent XSS
+app.use(hpp()); // Prevent HTTP Parameter Pollution
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // DB Connection
