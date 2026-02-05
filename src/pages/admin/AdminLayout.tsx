@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, Outlet, Link } from 'react-router-dom';
+import { auth } from '@/services/api';
 import { Button } from '@/components/ui/button';
 import { 
   LayoutDashboard, 
@@ -14,18 +15,32 @@ import {
 
 const AdminLayout = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('adminToken');
-    if (!token) {
-      navigate('/admin/login');
-    }
+    const verifyAuth = async () => {
+      try {
+        await auth.checkAuth();
+        setLoading(false);
+      } catch (error) {
+        navigate('/admin/login');
+      }
+    };
+    verifyAuth();
   }, [navigate]);
 
-  const handleLogout = () => {
-    localStorage.removeItem('adminToken');
-    navigate('/admin/login');
+  const handleLogout = async () => {
+    try {
+      await auth.logout();
+      navigate('/admin/login');
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
   };
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  }
 
   const navItems = [
     { label: 'Dashboard', icon: LayoutDashboard, path: '/admin/dashboard' },
