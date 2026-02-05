@@ -34,6 +34,7 @@ const corsOptions = {
   origin: [
     'http://localhost:8080',
     'https://fitlaunch-pro-1.onrender.com',
+    'https://dreamfitnesscenter.in',
     'https://www.dreamfitnesscenter.in'
   ],
   credentials: true,
@@ -57,15 +58,6 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/gym-cms')
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api', require('./routes/content'));
-
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'dist')));
-
-// The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist/index.html'));
-});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
